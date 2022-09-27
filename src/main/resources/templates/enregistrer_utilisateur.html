@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> TDBSSI NEXTTEL </title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" th:href="@{/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+
+<!--    <div class="login-logo">-->
+<!--        <a class="text-danger" href="../../index2.html"><b>NEX</b>TTEL</a>-->
+<!--    </div>-->
+    <!-- /.login-logo -->
+    <div class="card">
+        <div class="card-header text-center bg-washed-red">
+            <img class="animation__wobble" src="dist/img/Nexttel-Cameroon-Logo.png" alt="AdminLTELogo"
+                 height="70" width="70">
+
+        </div>
+        <div class="card-body card-body login-card-body">
+            <p class="login-box-msg">Veuillez remplir les informations pour la création de votre compte</p>
+
+            <form id="quickForm" autocomplete="off"  method="post">
+                <div class="input-group mb-3">
+                    <input type="email" name="email" id="email" class="form-control" placeholder="Adresse mail">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+
+                    <input type="password" name="password" id="password" class="form-control"
+                           placeholder="Votre mot de passe pour  ce système">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+
+                    <input type="password" id="rpassword" name="rpassword" class="form-control"
+                           placeholder="Confirmer motde passe">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- /.col -->
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-outline-danger btn-block animation__shake">Créer son compte</button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script th:src="@{/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap -->
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- overlayScrollbars -->
+<script th:src="@{/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/dist/js/adminlte.js}"></script>
+<script th:src="@{/plugins/jquery-validation/jquery.validate.min.js}"></script>
+<script th:src="@{/plugins/jquery-validation/additional-methods.min.js}"></script>
+<!-- PAGE /plugins -->
+<!-- jQuery Mapael -->
+<script th:src="@{/plugins/jquery-mousewheel/jquery.mousewheel.js}"></script>
+<script th:src="@{/plugins/raphael/raphael.min.js}"></script>
+<script th:src="@{/plugins/jquery-mapael/jquery.mapael.min.js}"></script>
+<script th:src="@{/plugins/jquery-mapael/maps/usa_states.min.js}"></script>
+<!-- ChartJS -->
+<script th:src="@{/plugins/chart.js/Chart.min.js}"></script>
+<script type="text/javascript">
+    $(function () {
+        $.validator.setDefaults({
+            submitHandler: function () {
+                if (confirm("Confirmer la création de ce compte?")) {
+                    var header = "[[${_csrf.headerName}]]";
+                    var token = "[[${_csrf.token}]]";
+
+                    $.ajax({
+
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "/utilisateur/create",
+                        data: JSON.stringify({
+                            'email': $("#email").val(),
+                            'password': $("#password").val(),
+                        }),
+
+                        async: true,
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader(header, token);
+                        },
+                        cache: false,
+                        success: function (result) {
+                            if (result != null) {
+                                alert("Insertion réussie  " + result.email);
+                            }
+
+                        },
+                        error: function (jqXHR,textStatus,message) {
+                            alert("Une érreur est survenue");
+                        }
+                    });
+
+
+                }
+
+            }
+        });
+        $('#quickForm').validate({
+            rules: {
+                email: {
+                    required: true,
+                },
+                password: {
+                    required: true,
+                    maxlength: 30
+
+                },
+                rpassword: {
+                    required: true,
+                    maxlength: 30,
+                    equalTo: "#password"
+
+
+                }
+
+            },
+            messages: {
+                username: {
+                    required: "Ce champ obligatoire",
+
+                },
+                password: {
+                    required: "Ce champ obligatoire",
+                },
+                rpassword: {
+                    equalTo: "Le mot de passe ne correspond pas",
+                    required: "Ce champ obligatoire"
+
+
+
+                }
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.input-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+                $(element).addClass('is-valid');
+
+
+            }
+        });
+    });
+
+</script>
+</body>
+</html>
