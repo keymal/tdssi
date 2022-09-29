@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> TDBSSI NEXTTEL </title>
+    <title>TDBSSI</title>
 
     <!-- Google Font: Source Sans Pro -->
     <!-- Font Awesome Icons -->
@@ -13,26 +13,31 @@
     <link rel="stylesheet" th:href="@{/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
     <!-- Theme style -->
     <link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}">
+    <style>
+
+
+        .couleurNexttel{
+            color: #E31A22;
+
+        }
+
+    </style>
 </head>
+
+
 <body class="hold-transition login-page">
 <div class="login-box">
+    <div class="login-logo">
+        <a  href="../../index2.html"><b class="couleurNexttel">NEXTTEL</b></a>
+    </div>
+    <div class="card ">
 
-<!--    <div class="login-logo">-->
-<!--        <a class="text-danger" href="../../index2.html"><b>NEX</b>TTEL</a>-->
-<!--    </div>-->
-    <!-- /.login-logo -->
-    <div class="card">
-        <div class="card-header text-center bg-washed-red">
-            <img class="animation__wobble" src="dist/img/Nexttel-Cameroon-Logo.png" alt="AdminLTELogo"
-                 height="70" width="70">
+        <div class="card-body">
+            <p class="login-box-msg"></p>
 
-        </div>
-        <div class="card-body card-body login-card-body">
-            <p class="login-box-msg">Veuillez remplir les informations pour la création de votre compte</p>
-
-            <form id="quickForm" autocomplete="off"  method="post">
+            <form id="quickForm" autocomplete="off" th:action="@{/login}" method="post">
                 <div class="input-group mb-3">
-                    <input type="email" name="email" id="email" class="form-control" placeholder="Adresse mail">
+                    <input type="email" name="username" id="username" class="form-control" placeholder="Identifiant">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -40,36 +45,32 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-
                     <input type="password" name="password" id="password" class="form-control"
-                           placeholder="Votre mot de passe pour  ce système">
+                           placeholder="Mot de passe">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
                 </div>
-
-                <div class="input-group mb-3">
-
-                    <input type="password" id="rpassword" name="rpassword" class="form-control"
-                           placeholder="Confirmer motde passe">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="row">
+
+
                     <!-- /.col -->
                     <div class="col-12">
-                        <button type="submit" class="btn btn-outline-danger btn-block animation__shake">Créer son compte</button>
+
+                        <button type="submit" class="btn btn-primary btn-block text-capitalize">Se connecter</button>
+                    </div>
+                    <div class="col-12">
+                        <p class="mb-1 mt-2 ">
+                            <a class="text-primary" href="forgot-password.html">Mot de passe oublié?</a>
+                        </p>
                     </div>
                     <!-- /.col -->
                 </div>
             </form>
         </div>
+
         <!-- /.card-body -->
     </div>
     <!-- /.card -->
@@ -96,66 +97,21 @@
 <script th:src="@{/plugins/chart.js/Chart.min.js}"></script>
 <script type="text/javascript">
     $(function () {
-        $.validator.setDefaults({
-            submitHandler: function () {
-                if (confirm("Confirmer la création de ce compte?")) {
-                    var header = "[[${_csrf.headerName}]]";
-                    var token = "[[${_csrf.token}]]";
-
-                    $.ajax({
-
-                        type: "POST",
-                        contentType: "application/json; charset=utf-8",
-                        url: "/utilisateur/create",
-                        data: JSON.stringify({
-                            'email': $("#email").val(),
-                            'password': $("#password").val(),
-                        }),
-
-                        async: true,
-                        beforeSend: function (xhr) {
-                            xhr.setRequestHeader(header, token);
-                        },
-                        cache: false,
-                        success: function (result) {
-                            if (result != null) {
-                                $("#email").val("");
-                                $("#password").val("");
-                                $("#rpassword").val("");
-
-                                $("#email").removeClass('is-valid');
-                                $("#password").removeClass('is-valid');
-                                $("#rpassword").removeClass('is-valid');
-                            }
-
-                        },
-                        error: function (jqxhr) {
-                            alert(jqxhr.responseText);
-                        }
-                    });
-
-
-                }
-
-            }
-        });
+        // $.validator.setDefaults({
+        //     submitHandler: function () {
+        //     }
+        // });
         $('#quickForm').validate({
             rules: {
-                email: {
+                username: {
                     required: true,
+                    maxlength: 10
                 },
                 password: {
                     required: true,
-                    maxlength: 30
+                    maxlength: 10
 
                 },
-                rpassword: {
-                    required: true,
-                    maxlength: 30,
-                    equalTo: "#password"
-
-
-                }
 
             },
             messages: {
@@ -165,13 +121,6 @@
                 },
                 password: {
                     required: "Ce champ obligatoire",
-                },
-                rpassword: {
-                    equalTo: "Le mot de passe ne correspond pas",
-                    required: "Ce champ obligatoire"
-
-
-
                 }
             },
             errorElement: 'span',

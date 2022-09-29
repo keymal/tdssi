@@ -4,6 +4,7 @@ import com.example.tdssi.dto.UtilisateurRequestDto;
 import com.example.tdssi.dto.UtilisateurResponseDto;
 import com.example.tdssi.service.UtilisateurService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,5 +37,15 @@ public class UtilisateurControllerImpl implements UtilisateurController {
 
         return new ResponseEntity<>(utilisateurService.save(dto, siteURL), HttpStatus.CREATED);
 
+    }
+
+    @Override
+    public String verifyUser(@Param("code") String code) {
+        if (utilisateurService.verify(code)) {
+            return "confirm_user";
+        } else {
+            return "verify_fail";
+
+        }
     }
 }

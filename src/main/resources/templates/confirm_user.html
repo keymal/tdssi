@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> TDBSSI NEXTTEL </title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" th:href="@{/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+
+<!--    <div class="login-logo">-->
+<!--        <a class="text-danger" href="../../index2.html"><b>NEX</b>TTEL</a>-->
+<!--    </div>-->
+    <!-- /.login-logo -->
+    <div class="card">
+        <div class="card-header text-center bg-washed-red">
+            <img class="animation__wobble" src="dist/img/Nexttel-Cameroon-Logo.png" alt="AdminLTELogo"
+                 height="70" width="70">
+
+        </div>
+        <div class="card-body card-body login-card-body">
+            <p class="login-box-msg">Veuillez remplir les informations pour la création de votre compte</p>
+
+            <div class="row">
+                <h3>You have signed up successfully!</h3>
+                <p>Please check your email to verify your account.</p>
+                <h4><a th:href="@{/login}">Click here to Login</a></h4>
+            </div>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script th:src="@{/plugins/jquery/jquery.min.js}"></script>
+<!-- Bootstrap -->
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- overlayScrollbars -->
+<script th:src="@{/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/dist/js/adminlte.js}"></script>
+<script th:src="@{/plugins/jquery-validation/jquery.validate.min.js}"></script>
+<script th:src="@{/plugins/jquery-validation/additional-methods.min.js}"></script>
+<!-- PAGE /plugins -->
+<!-- jQuery Mapael -->
+<script th:src="@{/plugins/jquery-mousewheel/jquery.mousewheel.js}"></script>
+<script th:src="@{/plugins/raphael/raphael.min.js}"></script>
+<script th:src="@{/plugins/jquery-mapael/jquery.mapael.min.js}"></script>
+<script th:src="@{/plugins/jquery-mapael/maps/usa_states.min.js}"></script>
+<!-- ChartJS -->
+<script th:src="@{/plugins/chart.js/Chart.min.js}"></script>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

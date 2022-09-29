@@ -5,7 +5,6 @@ import com.example.tdssi.dto.UtilisateurResponseDto;
 import com.example.tdssi.model.Utilisateur;
 import com.example.tdssi.repository.UtilisateurRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.modelmapper.ModelMapper;
@@ -19,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.UnsupportedEncodingException;
-import java.util.Random;
 
 @Service
 @Transactional
@@ -53,9 +50,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateur.setPassword(passwordEncoder.encode(utilisateur.getPassword()));
 
         Utilisateur save = utilisateurRepository.save(utilisateur);
+        System.out.println(save.getEmail());
 
         sendEmailVerification(utilisateur, siteUrl);
-        return new UtilisateurResponseDto("fsdfds","dffsdf");
+        UtilisateurResponseDto map = modelMapper.map(save, UtilisateurResponseDto.class);
+        System.err.println(map.getEmail());
+
+        return modelMapper.map(map, UtilisateurResponseDto.class);
     }
 
     @Override
@@ -75,7 +76,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                     + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
                     + "Thank you,<br>"
                     + "Your company name.";
-           MimeMessage message = mailSender.createMimeMessage();
+            MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
 
             helper.setFrom(fromAddress, senderName);
@@ -83,7 +84,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             helper.setSubject(subject);
 
             content = content.replace("[[name]]", utilisateur.getEmail());
-            String verifyURL = siteURL + "/verify?code=" + utilisateur.getVerificationCode();
+            String verifyURL = "http://localhost:8080/utilisateur" + "/verify?code=" + utilisateur.getVerificationCode();
 
             content = content.replace("[[URL]]", verifyURL);
 
@@ -117,5 +118,45 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public UtilisateurResponseDto update(UtilisateurRequestDto utilisateurRequestDto, Integer id) {
         return null;
+    }
+
+    @Override
+    public boolean verify(String verificationCode) {
+        Utilisateur user = utilisateurRepository.findUtilisateurByVerificationCode(verificationCode);
+
+        if (user == null || user.getStatus()) {
+            return false;
+        } else {
+            System.err.println(user.getVerificationCode());
+
+            user.setVerificationCode("");
+            System.err.println(user.getVerificationCode());
+            user.setStatus(true);
+            utilisateurRepository.save(user);
+            return true;
+        }
+    }
+
+
+    public void updateResetPasswordToken(String token, String email) {
+        Utilisateur utilisateur = utilisateurRepository.findUtilisateurByEmailIgnoreCase(email);
+        if (utilisateur != null) {
+            utilisateur.setResetPasswordToken(token);
+            utilisateurRepository.save(utilisateur);
+        } else {
+        }
+    }
+
+    @Override
+    public Utilisateur getByResetPasswordToken(String token) {
+        return utilisateurRepository.findUtilisateurByResetPasswordToken(token);
+    }
+
+    public void updatePassword(Utilisateur utilisateur, String newPassword) {
+        utilisateur.setPassword(passwordEncoder.encode(newPassword));
+
+
+        utilisateur.setResetPasswordToken(null);
+        utilisateurRepository.save(utilisateur);
     }
 }

@@ -17,4 +17,7 @@ public interface UtilisateurController {
 
     @PostMapping("/create")
     ResponseEntity<UtilisateurResponseDto> save(UtilisateurRequestDto dto, HttpServletRequest request) throws MessagingException;
+
+    @GetMapping("/verify")
+    public String verifyUser( String code);
 }

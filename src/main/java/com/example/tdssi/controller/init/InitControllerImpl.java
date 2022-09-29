@@ -15,7 +15,7 @@ public class InitControllerImpl implements InitController {
     @Override
     public String login() {
 
-        return "";
+        return "login";
     }
 
     @Override

@@ -20,4 +20,8 @@ public interface UtilisateurService {
     UtilisateurResponseDto update(UtilisateurRequestDto utilisateurRequestDto, Integer id);
 
 
+    public boolean verify(String verificationCode);
+
+
+    Utilisateur getByResetPasswordToken(String token);
 }

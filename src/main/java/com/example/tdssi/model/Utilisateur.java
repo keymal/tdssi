@@ -24,8 +24,11 @@ public class Utilisateur extends AbstractEntity implements Serializable {
 
     private Boolean status;
 
-    @Column(name = "verification_code", length = 64, updatable = false)
+    @Column(name = "verification_code", length = 64)
     private String verificationCode;
+
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "compte_roles",
             joinColumns = @JoinColumn(name = "utiliateur_id", referencedColumnName = "id"),
