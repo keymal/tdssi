@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 
 @Service
 @Transactional
@@ -57,6 +58,34 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         System.err.println(map.getEmail());
 
         return modelMapper.map(map, UtilisateurResponseDto.class);
+    }
+
+    @Override
+    public void sendEmail(String recipientEmail, String link)
+            throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        String fromAddress = env.getProperty("spring.mail.username");
+
+        helper.setFrom(fromAddress, "Shopme Support");
+        helper.setTo(recipientEmail);
+
+        String subject = "Here's the link to reset your password";
+
+        String content = "<p>Hello,</p>"
+                + "<p>You have requested to reset your password.</p>"
+                + "<p>Click the link below to change your password:</p>"
+                + "<p><a href=\"" + link + "\">Change my password</a></p>"
+                + "<br>"
+                + "<p>Ignore this email if you do remember your password, "
+                + "or you have not made the request.</p>";
+
+        helper.setSubject(subject);
+
+        helper.setText(content, true);
+
+        mailSender.send(message);
     }
 
     @Override
@@ -138,6 +167,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     }
 
 
+    @Override
     public void updateResetPasswordToken(String token, String email) {
         Utilisateur utilisateur = utilisateurRepository.findUtilisateurByEmailIgnoreCase(email);
         if (utilisateur != null) {
@@ -152,6 +182,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return utilisateurRepository.findUtilisateurByResetPasswordToken(token);
     }
 
+    @Override
     public void updatePassword(Utilisateur utilisateur, String newPassword) {
         utilisateur.setPassword(passwordEncoder.encode(newPassword));
 

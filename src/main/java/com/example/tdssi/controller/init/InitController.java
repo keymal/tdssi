@@ -1,6 +1,7 @@
 package com.example.tdssi.controller.init;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 public interface InitController {
 
@@ -9,4 +10,7 @@ public interface InitController {
 
     @GetMapping(value = {"","/"})
     String index();
+
+
+
 }

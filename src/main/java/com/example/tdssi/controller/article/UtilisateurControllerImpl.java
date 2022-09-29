@@ -27,7 +27,7 @@ public class UtilisateurControllerImpl implements UtilisateurController {
 
     @Override
     public String utilisateur() {
-        return null;
+        return "enregistrer_utilisateur";
     }
 
     @Override
@@ -48,4 +48,6 @@ public class UtilisateurControllerImpl implements UtilisateurController {
 
         }
     }
+
+
 }
