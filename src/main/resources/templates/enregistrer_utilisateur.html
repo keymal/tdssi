@@ -101,6 +101,11 @@
                 if (confirm("Confirmer la création de ce compte?")) {
                     var header = "[[${_csrf.headerName}]]";
                     var token = "[[${_csrf.token}]]";
+                    var email = $("#email").val();
+                    var password = $("#password").val();
+
+                    $("#password").val("");
+                    $("#email").val("");
 
                     $.ajax({
 
@@ -108,8 +113,8 @@
                         contentType: "application/json; charset=utf-8",
                         url: "/utilisateur/create",
                         data: JSON.stringify({
-                            'email': $("#email").val(),
-                            'password': $("#password").val(),
+                            'email': email,
+                            'password': password,
                         }),
 
                         async: true,

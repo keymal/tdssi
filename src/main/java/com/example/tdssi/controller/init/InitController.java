@@ -8,6 +8,7 @@ public interface InitController {
     @GetMapping("/login")
     String login();
 
+
     @GetMapping(value = {"","/"})
     String index();
 

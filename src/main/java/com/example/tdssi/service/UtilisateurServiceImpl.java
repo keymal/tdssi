@@ -68,7 +68,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
         String fromAddress = env.getProperty("spring.mail.username");
 
-        helper.setFrom(fromAddress, "Shopme Support");
+        helper.setFrom(fromAddress, "Assistance nexttel");
         helper.setTo(recipientEmail);
 
         String subject = "Here's the link to reset your password";
@@ -97,7 +97,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
             String fromAddress = env.getProperty("spring.mail.username");
 
-            String senderName = "Your company name";
+            String senderName = "Assistance nexttel";
 
             String subject = "Please verify your registration";
             String content = "Dear [[name]],<br>"
@@ -174,6 +174,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             utilisateur.setResetPasswordToken(token);
             utilisateurRepository.save(utilisateur);
         } else {
+
         }
     }
 
